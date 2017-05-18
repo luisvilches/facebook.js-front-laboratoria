@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.navb{
+  background: 	#3b5998;
+}
+
+.navbar-default .navbar-brand,.navbar-default .navbar-nav>li>a{
+  color: #fff;
+}
+
+.navbar-default .navbar-brand:hover,.navbar-default .navbar-nav>li>a:hover{
+  color: #fff;
+}
+
+
+.posButtonEnter{
+  margin-top: -3px;
+}
+
+.navbar-brand{
+  font-size: 50px;
+  margin-top: 15px;
+  font-family: 'Montserrat', sans-serif;
+}
+.LogoInt{
+  font-size: 20px;
+  margin-top: 0px;
+}
+
+.MarginTopHeader{
+  margin-top: 120px;
+}
+
+.centerd{
+  margin: 0 auto;
+  display: block;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0px 10px 20px #ccc;
+  max-width: 600px;
+}
+
+.maxContainer {
+  max-width: 600px;
+}
+
+.FilterPost {
+  max-width: 100px;
+  margin-right: 10px;
+}
