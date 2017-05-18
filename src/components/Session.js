@@ -5,6 +5,48 @@ var dias = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
 var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
 
 class NavBarLogin extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            messageAlerPass: 'El campo de usuario no puede estar en blanco',
+            messageAlerUser: 'El campo de password no puede estar en blanco',
+            alertPass: false,
+            alertUser: false,
+        }
+    }
+
+    login(){
+
+        let expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        let mail = this.refs.mail.value;
+        let pass = this.refs.pass.value;
+
+        if(mail === '' || mail === null || mail === 'undefined'){
+            this.setState({
+                alertUser: true
+            })
+        }
+
+        else if(!expr.test(mail)){
+            this.setState({
+                messageAlerUser: 'Correo invalido',
+                alertUser: !this.state.alertUser
+            })
+        }
+
+        else if(pass === '' || pass === null || pass === 'undefined'){
+            this.setState({
+                alertPass: true
+            })
+        }
+
+        else if(this.state.alertPass === false && this.state.alertUser === false){
+            alert('ok')
+        }
+    }
+
   render() {
     return (
       <div>
@@ -17,19 +59,21 @@ class NavBarLogin extends Component {
             </Navbar.Header>
             <Navbar.Collapse>
             <Nav pullRight>
-                <NavItem eventKey={1} href="#">
+                <NavItem eventKey={1}>
                     Correo electronico
                     <br/>
-                    <input type="text"/>
+                    <input ref="mail" type="text" className="inputLogin" onChange={item => {this.setState({alertUser: false})}}/>
+                    <p className={this.state.alertUser ? 'visible' : 'hidden'}>{this.state.messageAlerUser}</p>
                 </NavItem>
-                <NavItem eventKey={2} href="#">
+                <NavItem eventKey={2}>
                     Contraseña
                     <br/>
-                    <input type="password"/>
+                    <input ref="pass" type="password" className="inputLogin" onChange={item => {this.setState({alertPass: false})}}/>
+                    <p className={this.state.alertPass ? 'visible' : 'hidden'}>{this.state.messageAlerPass}</p>
                 </NavItem>
-                <NavItem eventKey={3} href="#">
+                <NavItem eventKey={3}>
                     <br/>
-                    <Button bsStyle="primary" className="posButtonEnter">Entrar</Button>
+                    <Button bsStyle="primary" className="posButtonEnter" onClick={this.login.bind(this)}>Entrar</Button>
                 </NavItem>
             </Nav>
             </Navbar.Collapse>

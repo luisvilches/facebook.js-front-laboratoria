@@ -7,7 +7,7 @@ class Contenedor extends Component {
         super(props);
 
         this.state = {
-            session: true
+            session: false
         }
     }
 
