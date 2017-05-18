@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Navbar,Nav,NavItem,Button,Grid,Row,Col,Radio,FormControl} from 'react-bootstrap'
+import {Navbar,Nav,NavItem,Button,Grid,Row,Col} from 'react-bootstrap'
 
 var expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
@@ -59,10 +59,18 @@ class NavBarLogin extends Component {
             })
             .then(res => res.json())
             .then(response => {
-                if(response.status === 'success'){
-                    alert(response.message)
+                if(response.success === true){
+                    localStorage.setItem('token', response.token);
+                    localStorage.setItem('success', response.success);
+                    localStorage.setItem('user', response.user._id);
+                    localStorage.setItem('username', `${response.user.name} ${response.user.lastname}`);
+                    console.log(response)
+                    this.props.reload();
+
+                }else if(response.success === false){
+                    alert('Error: '+response.message)
                 }else{
-                    alert(response.message)
+                    alert('Error de autenticacion, intente mas tarde')
                 }
             })
         }
@@ -232,7 +240,7 @@ class Session extends Component {
   render() {
     return (
       <Grid>
-        <NavBarLogin />
+        <NavBarLogin reload={this.props.action}/>
         <Row className="MarginTopHeader">
             <Col xs={12} md={7}>
                 <Global />

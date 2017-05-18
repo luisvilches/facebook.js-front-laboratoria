@@ -64,3 +64,21 @@ body {
 .navbar-nav>li>a>p{
   color: red;
 }
+
+.alert{
+  color: red;
+}
+
+.MarginBottom{
+  margin-bottom: 20px;
+}
+
+.MarginRight{
+  margin-right: 20px;
+}
+
+.filter{
+  position: fixed;
+  left: 10px;
+  top:50px;
+}

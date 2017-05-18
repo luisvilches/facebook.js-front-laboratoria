@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import Muro from './Muro';
 import Login from './Session';
-
-var dev = 'http://localhost:5000';
-var prod = '';
-
-var API = dev;
+import Navb from './Navbar';
 
 class Contenedor extends Component {
     constructor(props){
@@ -16,10 +12,27 @@ class Contenedor extends Component {
         }
     }
 
+    validationSession(){
+        if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
+            this.setState({
+                session:false
+            })
+        } else {
+            this.setState({
+                session:true
+            })
+        }
+    }
+
+    componentWillMount(){
+        this.validationSession();
+    }
+
+
     render() {
         return (
         <div>
-            {this.state.session ? <Muro /> : <Login />}
+            {this.state.session ? <div><Navb  action={this.validationSession.bind(this)}/><Muro /></div> : <Login action={this.validationSession.bind(this)} />}
         </div>
         );
     }
