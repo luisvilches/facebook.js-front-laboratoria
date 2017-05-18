@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import {Navbar,Nav,NavItem,Button,Grid,Row,Col,Radio,FormControl} from 'react-bootstrap';
 import Navb from './Navbar';
 
+var dev = 'http://localhost:5000';
+var prod = '';
+
+var API = dev;
 
 class Post extends Component {
 

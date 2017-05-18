@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import {Navbar,Nav,NavItem,Button,Grid,Row,Col,Radio,FormControl} from 'react-bootstrap'
 
-var dias = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-var meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
+var expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+var dev = 'http://localhost:5000';
+var prod = '';
+
+var API = dev;
+
 
 class NavBarLogin extends Component {
 
@@ -18,8 +23,6 @@ class NavBarLogin extends Component {
     }
 
     login(){
-
-        let expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         let mail = this.refs.mail.value;
         let pass = this.refs.pass.value;
 
@@ -43,9 +46,29 @@ class NavBarLogin extends Component {
         }
 
         else if(this.state.alertPass === false && this.state.alertUser === false){
-            alert('ok')
+            var formData = new FormData();
+            formData.append('mail', mail)
+            formData.append('pass', pass)
+
+            fetch(`${API}/login`,{
+                headers: {
+                'Accept': 'application/json'
+                },
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(response => {
+                if(response.status === 'success'){
+                    alert(response.message)
+                }else{
+                    alert(response.message)
+                }
+            })
         }
     }
+
+    
 
   render() {
     return (
@@ -100,24 +123,81 @@ class Register extends Component {
         super(props);
 
         this.state = {
-            days: dias,
-            months: meses,
-            years: []
+            messageAlert: '',
+            alertPass: false,
+            alertUser: false,
+            alertName: false,
         }
     }
 
-    cargarListaAños(){
+    register(){
+        let mail = this.refs.correo.value;
+        let pass = this.refs.password.value;
+        let name = this.refs.name.value;
+        let lastname = this.refs.lastname.value;
 
-        var year = 2018;
-        
-        for(var i = 1920; i < year ; i++ ){
-            this.state.years.push(i);
+        if(name === '' || name === null || name === 'undefined'){
+            this.setState({
+                messageAlert: 'Este campo no puede estar vacio',
+                alertName: true
+            })
+        }
+
+        if(lastname === '' || lastname === null || lastname === 'undefined'){
+            this.setState({
+                messageAlert: 'Este campo no puede estar vacio',
+                alertLastname: true
+            })
+        }
+
+        if(mail === '' || mail === null || mail === 'undefined'){
+            this.setState({
+                messageAlert: 'Este campo no puede estar vacio',
+                alertUser: true
+            })
+        }
+
+        else if(!expr.test(mail)){
+            this.setState({
+                messageAlert: 'Correo invalido',
+                alertUser: !this.state.alertUser
+            })
+        }
+
+        else if(pass === '' || pass === null || pass === 'undefined'){
+            this.setState({
+                messageAlert: 'Este campo no puede estar vacio',
+                alertPass: true
+            })
+        }
+
+        else if(this.state.alertPass === false && this.state.alertUser === false && this.state.alertName === false){
+            var formData = new FormData();
+            formData.append('name', name)
+            formData.append('lastname', lastname)
+            formData.append('mail', mail)
+            formData.append('pass', pass)
+
+            fetch(`${API}/create`,{
+                headers: {
+                'Accept': 'application/json'
+                },
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(response => {
+                if(response.status === 'success'){
+                    alert(response.message)
+                }else{
+                    alert(response.message)
+                }
+            })
         }
     }
 
     componentWillMount(){
-        this.cargarListaAños();
-        console.log(this.state.years)
+
     }
     render() {
         return (
@@ -126,61 +206,21 @@ class Register extends Component {
             <h4>Es gratis y lo sera siempre.</h4>
             <br/>
             <Col xs={12} md={6}>
-                <input type="text" placeholder="Nombre" className="form-control"/>
+                <input ref="name" type="text" placeholder="Nombre" className="form-control"/>
             </Col>
             <Col xs={12} md={6}>
-                <input type="text" placeholder="Apellidos" className="form-control"/>
+                <input ref="lastname" type="text" placeholder="Apellidos" className="form-control"/>
                 <br/>
             </Col>
             <Col xs={12} md={12}>
-                <input type="text" placeholder="Correo electronico" className="form-control"/>
+                <input ref="correo" type="text" placeholder="Correo electronico" className="form-control"/>
                 <br/>
-                <input type="text" placeholder="Contraseña nueva" className="form-control"/>
+                <input ref="password" type="text" placeholder="Contraseña nueva" className="form-control"/>
                 <br/>
-            </Col>
-            <Col xs={4} md={4}>
-                <FormControl componentClass="select" placeholder="select">
-                    <option value="Día">Día</option>
-                    {this.state.days.map((item,index) => {
-                        return(
-                            <option key={index} value={item}>{item}</option>
-                        )
-                    })}
-
-                </FormControl>
-            </Col>
-            <Col xs={4} md={4}>
-                <FormControl componentClass="select" placeholder="select">
-                    <option value="select">Mes</option>
-                    {this.state.months.map((item,index) => {
-                        return(
-                            <option key={index} value={item}>{item}</option>
-                        )
-                    })}
-                </FormControl>
-            </Col>
-            <Col xs={4} md={4}>
-                <FormControl componentClass="select" placeholder="select">
-                    <option value="select">Año</option>
-                    {this.state.years.map((item,index) => {
-                        return(
-                            <option key={index} value={item}>{item}</option>
-                        )
-                    })}
-                </FormControl>
             </Col>
             <Col xs={12} md={12}>
                 <br/>
-                <Radio name="radioGroup" inline>
-                    Hombre
-                </Radio>
-                <Radio name="radioGroup" inline>
-                    Mujer
-                </Radio>
-            </Col>
-            <Col xs={12} md={12}>
-                <br/>
-                <Button bsStyle="success">Terminado</Button>
+                <Button bsStyle="success" onClick={this.register.bind(this)}>Terminado</Button>
             </Col>
         
         </div>

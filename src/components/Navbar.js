@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import {Navbar,Nav,NavItem,Button,Grid,Row,Col,Radio,FormControl} from 'react-bootstrap'
 
+var dev = 'http://localhost:5000';
+var prod = '';
+
+var API = dev;
+
 
 class Navb extends Component {
   render() {
